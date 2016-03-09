@@ -5,12 +5,16 @@ var gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer'),
   sourcemaps = require('gulp-sourcemaps');
 
-// gulp.task('css', function() {
-// 	gulp.src('./styles/*.css')
-// 	  .pipe(concat('index.css'))
-// 	  .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
-//     .pipe(gulp.dest('./css'));
-// });
+themes = ['theme1', 'theme2', 'theme3'];
+
+gulp.task('css', function() {
+  themes.forEach(function (theme){
+    gulp.src('./'+ theme + '/styles/*.css')
+      .pipe(concat(theme + '.css'))
+      .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
+      .pipe(gulp.dest('./' + theme + '/css'));
+  });
+});
 
 gulp.task('js', function() {
 	gulp.src('./scripts/*.js')

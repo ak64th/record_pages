@@ -11,15 +11,21 @@ themes = ['theme1', 'theme2', 'theme3'];
 gulp.task('css', function() {
   themes.forEach(function (theme){
     gulp.src('./'+ theme + '/styles/*.css')
-      .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
-      .pipe(concat('main.css'))
+      .pipe(sourcemaps.init())
+        .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
+        .pipe(minify())
+        .pipe(concat('main.css'))
+      .pipe(sourcemaps.write())
       .pipe(gulp.dest('./' + theme + '/css'));
   });
 });
 
 gulp.task('js', function() {
 	gulp.src('./scripts/*.js')
-	  .pipe(concat('packed.js'))
+    .pipe(sourcemaps.init())
+      .pipe(concat('packed.js'))
+      .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./js'));
 });
 

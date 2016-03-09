@@ -41,13 +41,13 @@
       var style, quizType = this.quizConfig['type'];
       switch (quizType) {
         case app.QUIZ_TYPE.ORDINARY:
-          style = 'theme1/style/main.css';
+          style = 'theme1/css/main.css';
           break;
         case app.QUIZ_TYPE.TIME_LIMIT:
-          style = 'theme2/style/main.css';
+          style = 'theme2/css/main.css';
           break;
         case app.QUIZ_TYPE.CHALLENGE:
-          style = 'theme3/style/main.css';
+          style = 'theme3/css/main.css';
           break;
         default:
           throw new Error('Unknown Quiz Type');

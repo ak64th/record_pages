@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
   uglify = require('gulp-uglify'),
+  rename = require('gulp-rename'),
   concat = require('gulp-concat'),
   minify = require('gulp-clean-css'),
   autoprefixer = require('gulp-autoprefixer'),
@@ -10,8 +11,8 @@ themes = ['theme1', 'theme2', 'theme3'];
 gulp.task('css', function() {
   themes.forEach(function (theme){
     gulp.src('./'+ theme + '/styles/*.css')
-      .pipe(concat(theme + '.css'))
       .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
+      .pipe(concat('main.css'))
       .pipe(gulp.dest('./' + theme + '/css'));
   });
 });
@@ -19,7 +20,6 @@ gulp.task('css', function() {
 gulp.task('js', function() {
 	gulp.src('./scripts/*.js')
 	  .pipe(concat('packed.js'))
-	  .pipe(uglify())
     .pipe(gulp.dest('./js'));
 });
 

@@ -6,8 +6,12 @@
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-clean-css": "^2.0.3",
     "gulp-concat": "^2.6.0",
     "gulp-connect": "^2.3.1",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-stylus": "^2.3.1",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7"
   },

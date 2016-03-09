@@ -1,0 +1,23 @@
+{
+  "name": "record_node_pages",
+  "version": "0.0.1",
+  "description": "Learn to use gulp",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^2.3.1",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "learn",
+    "gulp"
+  ],
+  "author": "Elmer Yu",
+  "license": "ISC"
+}

@@ -3,34 +3,40 @@ var gulp = require('gulp'),
   rename = require('gulp-rename'),
   concat = require('gulp-concat'),
   minify = require('gulp-clean-css'),
-  autoprefixer = require('gulp-autoprefixer'),
-  sourcemaps = require('gulp-sourcemaps');
+  prefix = require('gulp-autoprefixer'),
+  stylus = require('gulp-stylus')
+  maps = require('gulp-sourcemaps');
 
 themes = ['theme1', 'theme2', 'theme3'];
 
-gulp.task('css', function() {
-  themes.forEach(function (theme){
-    gulp.src('./'+ theme + '/styles/*.css')
-      .pipe(sourcemaps.init())
-        .pipe(autoprefixer({browsers: '> 1% in CN, iOS 7'}))
-        .pipe(minify())
+themes.forEach(function (theme){
+  gulp.task(theme, function() {
+    return gulp.src('./'+ theme + '/styles/*.stylus')
+      .pipe(maps.init())
+        .pipe(stylus())
+        .pipe(prefix({browsers: '> 1% in CN, iOS 7'}))
+        // .pipe(minify())
         .pipe(concat('main.css'))
-      .pipe(sourcemaps.write())
+      .pipe(maps.write())
       .pipe(gulp.dest('./' + theme + '/css'));
   });
 });
 
+gulp.task('css', themes);
+
 gulp.task('js', function() {
-	gulp.src('./scripts/*.js')
-    .pipe(sourcemaps.init())
+	return gulp.src('./scripts/*.js')
+    .pipe(maps.init())
       .pipe(concat('packed.js'))
       .pipe(uglify())
-    .pipe(sourcemaps.write('./'))
+    .pipe(maps.write('./'))
     .pipe(gulp.dest('./js'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch('styles/*.css', ['css']);
+  themes.forEach(function (theme){
+    gulp.watch('./'+ theme + '/styles/*.stylus', [theme]);
+  });
   gulp.watch('scripts/*.js', ['js']);
 })
 

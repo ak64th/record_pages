@@ -4,7 +4,7 @@
   app.ApplicationView = Backbone.View.extend({
     el: $('#app_container'),
     dataRoot: '/data/',
-    apiRoot: '/rest/',
+    apiRoot: '/api/',
     initialize: function(options) {
       this.game_code = options.game_code;
       this.gameDataRoot = this.dataRoot + this.game_code + '/';
@@ -52,7 +52,6 @@
         default:
           throw new Error('Unknown Quiz Type');
       }
-      console.log('style', style);
       $('head').append('<link rel="stylesheet" type="text/css" href="' + style + '"/>');
     },
     prepareQuiz: function() {
@@ -61,13 +60,38 @@
         infoFields: this.quizConfig.info_fields,
         quizId: this.quizConfig.id
       });
-      this.listenToOnce(view, 'startQuiz', this.startQuiz);
+      this.listenToOnce(view, 'startQuiz', this.gatherUserInfo);
       this.loadView(view);
     },
-    startQuiz: function(args) {
-      // console.log(_.object(args));
-      //Todo: send args to server
-
+    gatherUserInfo: function(args){
+      var params = {}, storageKey;
+      if(_.size(args) > 0){
+        var userinfo = JSON.stringify(_.object(args));
+        var hash = mmh3(userinfo);
+        var storageKey = this.game_code + '_uid_' + hash;
+        var uid = localStorage.getItem(storageKey);
+        if ( !uid ){
+          params['hash'] = hash;
+          params['userinfo'] = userinfo;
+        } else {
+          params['uid'] = uid;
+        }
+      }
+      $.ajax({
+        url: this.apiRoot + 'start/' + this.quizConfig.id,
+        data: params,
+        method: 'POST'
+      }).done(_.bind(function(data){
+        this.run_id = data['run_id'];
+        if(!!storageKey){
+          this.uid = data['uid'];
+          localStorage.setItem(storageKey, data['uid']);
+        }
+        this.startQuiz();
+      }, this));
+    },
+    startQuiz: function() {
+      console.log(this.uid, this.run_id);
       var ViewClass, quizType = this.quizConfig['type'];
       var style = '';
       switch (quizType) {
@@ -99,6 +123,52 @@
       this.loadView(view);
     }
   });
+
+  // mumurhash3 function from github.com/garycourt/murmurhash-js
+  function mmh3(key, seed) {
+    var remainder, bytes, h1, h1b, c1, c1b, c2, c2b, k1, i;
+    remainder = key.length & 3; // key.length % 4
+    bytes = key.length - remainder;
+    h1 = seed;
+    c1 = 0xcc9e2d51;
+    c2 = 0x1b873593;
+    i = 0;
+    while (i < bytes) {
+      k1 =
+        ((key.charCodeAt(i) & 0xff)) |
+        ((key.charCodeAt(++i) & 0xff) << 8) |
+        ((key.charCodeAt(++i) & 0xff) << 16) |
+        ((key.charCodeAt(++i) & 0xff) << 24);
+      ++i;
+      k1 = ((((k1 & 0xffff) * c1) + ((((k1 >>> 16) * c1) & 0xffff) << 16))) & 0xffffffff;
+      k1 = (k1 << 15) | (k1 >>> 17);
+      k1 = ((((k1 & 0xffff) * c2) + ((((k1 >>> 16) * c2) & 0xffff) << 16))) & 0xffffffff;
+      h1 ^= k1;
+      h1 = (h1 << 13) | (h1 >>> 19);
+      h1b = ((((h1 & 0xffff) * 5) + ((((h1 >>> 16) * 5) & 0xffff) << 16))) & 0xffffffff;
+      h1 = (((h1b & 0xffff) + 0x6b64) + ((((h1b >>> 16) + 0xe654) & 0xffff) << 16));
+    }
+    k1 = 0;
+    switch (remainder) {
+      case 3:
+        k1 ^= (key.charCodeAt(i + 2) & 0xff) << 16;
+      case 2:
+        k1 ^= (key.charCodeAt(i + 1) & 0xff) << 8;
+      case 1:
+        k1 ^= (key.charCodeAt(i) & 0xff);
+        k1 = (((k1 & 0xffff) * c1) + ((((k1 >>> 16) * c1) & 0xffff) << 16)) & 0xffffffff;
+        k1 = (k1 << 15) | (k1 >>> 17);
+        k1 = (((k1 & 0xffff) * c2) + ((((k1 >>> 16) * c2) & 0xffff) << 16)) & 0xffffffff;
+        h1 ^= k1;
+    }
+    h1 ^= key.length;
+    h1 ^= h1 >>> 16;
+    h1 = (((h1 & 0xffff) * 0x85ebca6b) + ((((h1 >>> 16) * 0x85ebca6b) & 0xffff) << 16)) & 0xffffffff;
+    h1 ^= h1 >>> 13;
+    h1 = ((((h1 & 0xffff) * 0xc2b2ae35) + ((((h1 >>> 16) * 0xc2b2ae35) & 0xffff) << 16))) & 0xffffffff;
+    h1 ^= h1 >>> 16;
+    return h1 >>> 0;
+  }
 
   root.app = app;
   return app;

@@ -57,7 +57,7 @@
           showAnswer = (this.config.show_answer || false),
           timeout = current.get('timeout'),
           message = current.isCorrect() ? '亲，答题正确，好厉害哦~' : (
-             timeout ? '亲，回答超时，注意答题时间哦~' : '亲，答题错误。'
+            timeout ? '亲，回答超时，注意答题时间哦~' : '亲，答题错误。'
           ),
           emotion = timeout ? 'sweat' : (
             current.isCorrect() ? 'tongue' : 'tears'
@@ -77,7 +77,8 @@
           button: { text: "查看结果" },
           emotion: emotion,
           callback: _.bind(function(){
-            this.trigger('finishQuiz');
+            var points = this.questions.totalPoints(this.config.question_points);
+            this.trigger('finishQuiz', points);
           }, this)
         });
       }

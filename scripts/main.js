@@ -32,6 +32,11 @@
         this.prepareQuiz();
       }
     },
+    rerun: function(){
+      delete this.run_id;
+      delete this.uid;
+      this.run();
+    },
     loadView: function(view) {
       this.view && (this.view.close ? this.view.close() : this.view.remove());
       this.view = view;
@@ -116,11 +121,24 @@
       this.listenToOnce(view, 'finishQuiz', this.finishQuiz);
       this.loadView(view);
     },
-    finishQuiz: function() {
-      console.log("结束");
-      //Todo: send data to server
-      var view = new app.RankView();
-      this.loadView(view);
+    finishQuiz: function(points) {
+      console.log("结束，得到" + points + '分');
+      var result = {'points': points};
+      var data =  { 'score': points,'run_id': this.uid };
+      if (!!this.uid) data['uid'] = this.uid
+      $.ajax({
+        url: this.apiRoot + 'end/' + this.quizConfig.id,
+        data: data,
+        method: 'POST'
+      }).done(_.bind(function(data){
+        console.log(data);
+        result['rank'] = data['rank'];
+        result['bestPoints'] = data['best_score'];
+        result['bestRank'] = data['best_rank'];
+        var view = new app.RankView({'result': result});
+        this.listenToOnce(view, 'rerun', this.rerun);
+        this.loadView(view);
+      }, this));
     }
   });
 

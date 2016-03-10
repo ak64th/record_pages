@@ -42,9 +42,9 @@
       <section class="info">
         <h3>请完整填写以下资料：</h3>
         <% _.each(infoFields, function(field){
-    var field_key = field[0];
-    var field_text = field[1];
-    saved = localStorage.getItem(field_key) || ''; %>
+            var field_key = field[0];
+            var field_text = field[1];
+            saved = localStorage.getItem(field_key) || ''; %>
           <input placeholder="<%= field_text %>" name="<%= field_key %>" value="<%= saved %>">
           <% }) %>
       </section>
@@ -90,11 +90,10 @@
     <i class="share" />
     <section class="message">
       <i class='banner' /> 这一局中我获得了
-      <span class="redWords"><%=points%></span>分（总分是
-      <%=maxPoints%>分），当前排名第<span class="redWords"><%=rank%></span>名，我的最好成绩 是
-        <span class="redWords"><%=bestPoints%></span>分，最好排名是第<span class="redWords"><%=bestRank%></span>名。
-        <p>还想获得更高成绩，那就再来挑战一局吧！</p>
-        <input type="submit" class="submit button" value="再来一局">
+      <span class="redWords"><%=points%></span>分，当前排名第<span class="redWords"><%=rank+1%></span>名，我的最好成绩 是
+      <span class="redWords"><%=bestPoints%></span>分，最好排名是第<span class="redWords"><%=bestRank+1%></span>名。
+      <p>还想获得更高成绩，那就再来挑战一局吧！</p>
+      <input type="submit" class="submit button" value="再来一局">
     </section>
   </script>
   <script type="text/template" id="tpl_modal">

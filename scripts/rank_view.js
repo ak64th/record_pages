@@ -5,15 +5,17 @@
     tagName: 'div',
     className: 'rank',
     template: _.template($('#tpl_rank').html()),
+    events: {'click .submit': 'onSubmit'},
+    initialize: function(options) {
+      console.log(options);
+      this.result = options.result;
+    },
     render: function(){
-      this.$el.html(this.template({
-        points:0,
-        maxPoints:0,
-        bestPoints:100,
-        rank:2,
-        bestRank:1
-      }));
+      this.$el.html(this.template(this.result));
       return this;
+    },
+    onSubmit: function(){
+      this.trigger('rerun');
     }
   });
 

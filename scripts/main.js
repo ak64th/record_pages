@@ -118,14 +118,25 @@
       });
       var used = parseInt(localStorage.getItem(this.game_code + '_count')) || 0;
       localStorage.setItem(this.game_code + '_count', used + 1);
+      this.listenTo(view, 'answerQuestion', this.answerQuestion);
       this.listenToOnce(view, 'finishQuiz', this.finishQuiz);
       this.loadView(view);
+    },
+    answerQuestion: function(model){
+      var params =  {
+        'run_id': this.run_id,
+        'selected': _(model.get('selected')).pluck('id').join(),
+        'correct': model.isCorrect()
+      };
+      if (!!this.uid) params['uid'] = this.uid;
+      var url = this.apiRoot + 'answer/' + this.quizConfig.id + '/' + model.id;
+      $.ajax({ url: url, data: params, method: 'POST'}).done(function(data){console.log(data);});
     },
     finishQuiz: function(points) {
       console.log("结束，得到" + points + '分');
       var result = {'points': points};
       var data =  { 'score': points,'run_id': this.uid };
-      if (!!this.uid) data['uid'] = this.uid
+      if (!!this.uid) data['uid'] = this.uid;
       $.ajax({
         url: this.apiRoot + 'end/' + this.quizConfig.id,
         data: data,

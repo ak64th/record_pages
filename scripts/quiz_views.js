@@ -48,11 +48,10 @@
       var points = this.questions.totalPoints(questionPoints);
       this.$('#count').html(count);
       this.$('#points').html(points);
-      console.log('update panel', count, points);
     },
     finishQuestion: function(){
-      //Todo: ajax to server
       this.postQuestion && this.postQuestion();
+      this.trigger('answerQuestion', this.currentQuestion);
       var current = this.currentQuestion,
           showAnswer = (this.config.show_answer || false),
           timeout = current.get('timeout'),

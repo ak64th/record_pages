@@ -11,7 +11,7 @@
     initialize: function(options){
       // set code(A,B,C...) for each options and build a collection
       var optionData = this.model.get('options');
-      var questionOptions =  new app.OptionCollection(optionData);
+      var questionOptions =  new app.OptionCollection(_.shuffle(optionData));
       questionOptions.each(function(model, index){
         model.set('code' , String.fromCharCode(65 + index));
       });
@@ -37,7 +37,7 @@
       this.$('.option_list').append(view.render().el);
     },
     renderAllOptions: function(){
-      var questionOptions = _.shuffle(this.model.get('options').models);
+      var questionOptions = this.model.get('options').models;
       _.each(questionOptions, this.renderOption, this);
       return this;
     },

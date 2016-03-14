@@ -22,6 +22,11 @@
     },
     render: function(){
       var data = this.model.toJSON();
+      if(this.model.get('type') == app.QUESTION_TYPE.MULTI){
+        data['content'] += '[多选]';
+      } else {
+        data['content'] += '[单选]';
+      }
       this.$el.html(this.template(data));
       this.renderAllOptions();
       return this;

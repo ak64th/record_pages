@@ -525,7 +525,7 @@
       var count = this.questions.filter({'answered': true}).length,
           questionPoints = this.config.question_points;
       var points = this.questions.totalPoints(questionPoints);
-      this.$('#count').html(count);
+      this.$('#count').html(count + 1);
       this.$('#points').html(points);
     },
     finishQuestion: function(){

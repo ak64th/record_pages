@@ -7,7 +7,7 @@ var gulp = require('gulp'),
   stylus = require('gulp-stylus')
   maps = require('gulp-sourcemaps');
 
-themes = ['theme1', 'theme2', 'theme3'];
+var themes = ['theme1', 'theme2', 'theme3'];
 
 themes.forEach(function (theme){
   gulp.task(theme, function() {
@@ -15,10 +15,15 @@ themes.forEach(function (theme){
       .pipe(maps.init())
         .pipe(stylus())
         .pipe(prefix({browsers: '> 1% in CN, iOS 7'}))
-        // .pipe(minify())
         .pipe(concat('main.css'))
+        .pipe(minify())
       .pipe(maps.write())
       .pipe(gulp.dest('./' + theme + '/css'));
+  });
+
+  gulp.task('deploy_' + theme, [theme], function(){
+    return gulp.src('./' + theme + '/**/*')
+      .pipe(gulp.dest('./public/' + theme));
   });
 });
 
@@ -28,10 +33,31 @@ gulp.task('js', function() {
 	return gulp.src('./scripts/*.js')
     .pipe(maps.init())
       .pipe(concat('packed.js'))
-      .pipe(uglify())
     .pipe(maps.write('./'))
     .pipe(gulp.dest('./js'));
 });
+
+gulp.task('deploy_themes', themes.map(function(theme){return 'deploy_' + theme;}))
+
+gulp.task('deploy_js', ['js'], function(){
+  return gulp.src('./js/*.js')
+    .pipe(maps.init())
+      .pipe(uglify())
+    .pipe(maps.write('./'))
+    .pipe(gulp.dest('./public/js'));
+});
+
+gulp.task('deploy_html', function(){
+  return gulp.src('./index.html')
+    .pipe(gulp.dest('./public'));
+});
+
+gulp.task('deploy_vender', function(){
+  return gulp.src('./bower_components/**/*')
+    .pipe(gulp.dest('./public/bower_components'));
+});
+
+gulp.task('deploy', ['deploy_js', 'deploy_themes', 'deploy_html', 'deploy_vender']);
 
 gulp.task('watch', function() {
   themes.forEach(function (theme){

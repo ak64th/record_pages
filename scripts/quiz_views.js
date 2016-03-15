@@ -13,6 +13,7 @@
     },
     render: function(){
       this.$el.html(this.template({timeLimit: this.timeLimit}));
+      this.updatePanel();
       // Once get a question start the quiz
       this.listenToOnce(this.questions, 'add', this.start);
       this.listenTo(this.questions, 'change:answered', this.updatePanel);
@@ -118,6 +119,15 @@
   });
 
   app.OrdinaryQuizView = app.QuizBaseView.extend({
+    updatePanel: function(){
+      var numberOfQuestions = this.questions.length,
+          count = this.questions.filter({'answered': true}).length,
+          questionPoints = this.config.question_points;
+      var points = this.questions.totalPoints(questionPoints);
+      this.$('#count').html(count + 1);
+      this.$('#points').html(points);
+      this.$('#total').html('总共' + numberOfQuestions + '题').show();
+    },
     preQuestion: function(){
       if(this.timeLimit()) this.startTimer();
     },

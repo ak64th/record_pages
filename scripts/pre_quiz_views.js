@@ -43,7 +43,7 @@
       var field_keys = _.unzip(this.infoFields)[0];
       var validated = false;
       var field_data = [];
-      if (field_keys.length){
+      if (field_keys && field_keys.length){
         validated = _(this.$('input')).chain()
         .filter(function(input){
           return _(field_keys).indexOf(input.name) >= 0;

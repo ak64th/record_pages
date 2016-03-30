@@ -156,7 +156,7 @@
     finishQuiz: function(points) {
       console.log("结束，得到" + points + '分');
       var result = {'points': points};
-      var data =  { 'score': points,'run_id': this.uid };
+      var data =  { 'score': points,'run_id': this.run_id };
       if (!!this.uid) data['uid'] = this.uid;
       $.ajax({
         url: this.apiRoot + 'end/' + this.quizConfig.id,
@@ -350,7 +350,7 @@
       var field_keys = _.unzip(this.infoFields)[0];
       var validated = false;
       var field_data = [];
-      if (field_keys.length){
+      if (field_keys && field_keys.length){
         validated = _(this.$('input')).chain()
         .filter(function(input){
           return _(field_keys).indexOf(input.name) >= 0;
@@ -629,7 +629,7 @@
       var loadedCount = this.questions.countBy('type');
       var neededType = _.findKey(this.config.count, function(count, type){
         var loaded = loadedCount[type] || 0;
-        // console.log('type:' + type +' loaded:'+loaded+' need:'+count);
+        console.log('type:' + type +' loaded:'+loaded+' need:'+count);
         return loaded < count;
       });
       if (!neededType) return this.questions;
@@ -642,6 +642,7 @@
           url: this.gameDataRoot + file,
           timeout: app.DOWNLOAD_TIMEOUT
         }).done(_.bind(function(data){
+          console.log(data);
           var toAdd = _.sample(data.objects, neededCount);
           this.questions.add(toAdd);
         }, this));
@@ -719,7 +720,6 @@
     template: _.template($('#tpl_rank').html()),
     events: {'click .submit': 'onSubmit'},
     initialize: function(options) {
-      console.log(options);
       this.result = options.result;
     },
     render: function(){

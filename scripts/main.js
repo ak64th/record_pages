@@ -135,7 +135,7 @@
     finishQuiz: function(points) {
       console.log("结束，得到" + points + '分');
       var result = {'points': points};
-      var data =  { 'score': points,'run_id': this.uid };
+      var data =  { 'score': points,'run_id': this.run_id };
       if (!!this.uid) data['uid'] = this.uid;
       $.ajax({
         url: this.apiRoot + 'end/' + this.quizConfig.id,

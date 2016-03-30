@@ -145,7 +145,7 @@
       var loadedCount = this.questions.countBy('type');
       var neededType = _.findKey(this.config.count, function(count, type){
         var loaded = loadedCount[type] || 0;
-        // console.log('type:' + type +' loaded:'+loaded+' need:'+count);
+        console.log('type:' + type +' loaded:'+loaded+' need:'+count);
         return loaded < count;
       });
       if (!neededType) return this.questions;
@@ -158,6 +158,7 @@
           url: this.gameDataRoot + file,
           timeout: app.DOWNLOAD_TIMEOUT
         }).done(_.bind(function(data){
+          console.log(data);
           var toAdd = _.sample(data.objects, neededCount);
           this.questions.add(toAdd);
         }, this));

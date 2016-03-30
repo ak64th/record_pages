@@ -7,7 +7,6 @@
     template: _.template($('#tpl_rank').html()),
     events: {'click .submit': 'onSubmit'},
     initialize: function(options) {
-      console.log(options);
       this.result = options.result;
     },
     render: function(){

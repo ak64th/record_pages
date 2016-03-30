@@ -93,8 +93,10 @@
     <i class="share" />
     <section class="message">
       <i class='banner' /> 这一局中我获得了
-      <span class="redWords"><%=points%></span>分，当前排名第<span class="redWords"><%=rank+1%></span>名，我的最好成绩 是
-      <span class="redWords"><%=bestPoints%></span>分，最好排名是第<span class="redWords"><%=bestRank+1%></span>名。
+      <span class="redWords"><%=points%></span>分，当前排名第<span class="redWords"><%=rank+1%></span>名，
+      <% if(bestPoints){ %>
+      我的最好成绩 是<span class="redWords"><%=bestPoints%></span>分，最好排名是第<span class="redWords"><%=bestRank+1%></span>名。
+      <% } %>
       <p>还想获得更高成绩，那就再来挑战一局吧！</p>
       <input type="submit" class="submit button" value="再来一局">
     </section>

@@ -62,7 +62,7 @@
           emotion = timeout ? 'sweat' : (
             current.isCorrect() ? 'tongue' : 'tears'
           );
-      showAnswer && (message += "正确答案:" + current.getAnswerCodes().join() + '。');
+      showAnswer && (message += "正确答案:" + current.getAnswerCodes().sort().join() + '。');
       if(this.hasNext()){
         app.modal({
           message: message,

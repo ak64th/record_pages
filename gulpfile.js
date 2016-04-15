@@ -37,6 +37,31 @@ gulp.task('js', function() {
     .pipe(gulp.dest('./js'));
 });
 
+gulp.task('vendor', function(){
+  return gulp.src([
+    './bower_components/jquery/dist/jquery.js',
+    './bower_components/underscore/underscore.js',
+    './bower_components/backbone/backbone.js'
+  ])
+  .pipe(maps.init())
+  .pipe(concat('vendor.js'))
+  .pipe(uglify())
+  .pipe(maps.write('./'))
+  .pipe(gulp.dest('./js'));
+});
+
+
+gulp.task('watch', function() {
+  themes.forEach(function (theme){
+    gulp.watch('./'+ theme + '/styles/*.stylus', [theme]);
+  });
+  gulp.watch('scripts/*.js', ['js']);
+})
+
+gulp.task('default', ['css', 'js','vendor', 'watch']);
+
+
+// Deploy
 gulp.task('deploy_themes', themes.map(function(theme){return 'deploy_' + theme;}))
 
 gulp.task('deploy_js', ['js'], function(){
@@ -52,15 +77,6 @@ gulp.task('deploy_html', function(){
     .pipe(gulp.dest('./public'));
 });
 
-gulp.task('vendor', function(){
-  return gulp.src([
-    './bower_components/jquery/dist/jquery.js',
-    './bower_components/underscore/underscore.js',
-    './bower_components/backbone/backbone.js'
-  ])
-  .pipe(gulp.dest('./js'));
-});
-
 gulp.task('deploy_vender', function(){
   return gulp.src([
     './bower_components/jquery/dist/jquery.js',
@@ -70,12 +86,3 @@ gulp.task('deploy_vender', function(){
 });
 
 gulp.task('deploy', ['deploy_js', 'deploy_themes', 'deploy_html', 'deploy_vender']);
-
-gulp.task('watch', function() {
-  themes.forEach(function (theme){
-    gulp.watch('./'+ theme + '/styles/*.stylus', [theme]);
-  });
-  gulp.watch('scripts/*.js', ['js']);
-})
-
-gulp.task('default', ['css', 'js','vendor', 'watch']);

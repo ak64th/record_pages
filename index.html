@@ -4,8 +4,14 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title>一战到底</title>
+  <style media="screen">
+    /* CSS Mobile Reset */
+    html, body { margin: 0; padding: 0; border: 0; }
+    h1, h2, h3, h4, h5, h6{ font-weight: normal; }
+    img { border: 0; max-width: 100%; }
+    a { text-decoration: none; }
+  </style>
 </head>
-
 <body>
   <div id="app_container">
   </div>
@@ -111,9 +117,7 @@
         </button>
     </div>
   </script>
-  <script type="text/javascript" src="/js/jquery.js"></script>
-  <script type="text/javascript" src="/js/underscore.js"></script>
-  <script type="text/javascript" src="/js/backbone.js"></script>
+  <script type="text/javascript" src="/js/vendor.js"></script>
   <script type="text/javascript" src="/js/packed.js"></script>
   <script>
     var application = null;
@@ -124,8 +128,22 @@
         game_code: game_code,
         config: data
       });
-      application.loadStyle();
-      application.run();
+      if(data.welcome_img){
+        $el = $('<a href="#"><img src="' + data_url_root + data.welcome_img + '" alt="welcome" /></a>');
+        $el.find('img').css('box-sizing', 'border-box')
+          .css('height', '100%')
+          .css('width', '100%');
+        $('body').append($el);
+        $el.on('click', function(e){
+          e.preventDefault();
+          this.remove();
+          application.loadStyle();
+          application.run();
+        })
+      } else {
+        application.loadStyle();
+        application.run();
+      }
     });
   </script>
 </body>

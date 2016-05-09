@@ -55,28 +55,28 @@
             var field_key = field[0];
             var field_text = field[1];
             saved = localStorage.getItem(field_key) || ''; %>
-          <input placeholder="<%= field_text %>" name="<%= field_key %>" value="<%= saved %>">
-          <% }) %>
+        <input placeholder="<%= field_text %>" name="<%= field_key %>" value="<%= saved %>">
+        <% }) %>
       </section>
       <% } %>
         <input type="submit" class="submit button" value="开始游戏">
   </script>
   <script type="text/template" id="tpl_quiz">
-    <section class="panel">
+    <div class="panel">
       <% if (timeLimit) { %>
-        <section class='timer'>
-          <i class="clock" />
-          <span class="remaining" id="timer"></span>
-        </section>
-        <% } %>
-          <section class="grade">
-            <span class="tag">
-              第<span id="count">1</span>题
-              <span id="total" style='display: none'></span>
-            </span>
-            <span class="tag"><span id="points">0</span>分</span>
-          </section>
-          </div>
+      <section class='timer'>
+        <i class="clock" />
+        <span class="remaining" id="timer"></span>
+      </section>
+      <% } %>
+      <section class="grade">
+        <span class="tag">
+          第<span id="count">1</span>题
+          <span id="total" style='display: none'></span>
+        </span>
+        <span class="tag"><span id="points">0</span>分</span>
+      </section>
+    </div>
   </script>
   <script type="text/template" id="tpl_question">
     <div class="content">
@@ -95,8 +95,7 @@
   <script type="text/template" id="tpl_option_multi">
     <input type='checkbox' id='option-<%= id %>' name='question_option'>
     <label for='option-<%= id %>'>
-      <%= code %>.
-        <%= content %>
+      <%= code %>. <%= content %>
     </label>
   </script>
   <script type="text/template" id="tpl_rank">

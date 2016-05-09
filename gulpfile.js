@@ -12,12 +12,10 @@ var themes = ['theme1', 'theme2', 'theme3'];
 themes.forEach(function (theme){
   gulp.task(theme, function() {
     return gulp.src('./'+ theme + '/styles/*.stylus')
-      .pipe(maps.init())
-        .pipe(stylus())
-        .pipe(prefix({browsers: '> 1% in CN, iOS 7'}))
-        .pipe(concat('main.css'))
-        .pipe(minify())
-      .pipe(maps.write())
+      .pipe(stylus())
+      .pipe(prefix({browsers: '> 1% in CN, iOS 7'}))
+      .pipe(concat('main.css'))
+      .pipe(minify())
       .pipe(gulp.dest('./' + theme + '/css'));
   });
 

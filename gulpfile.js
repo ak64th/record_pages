@@ -15,6 +15,8 @@ themes.forEach(function (theme){
       .pipe(stylus())
       .pipe(prefix({browsers: '> 1% in CN, iOS 7'}))
       .pipe(concat('main.css'))
+      .pipe(gulp.dest('./' + theme + '/css'))
+      .pipe(rename({ suffix: '.min' }))
       .pipe(minify())
       .pipe(gulp.dest('./' + theme + '/css'));
   });

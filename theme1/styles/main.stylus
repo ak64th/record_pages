@@ -107,32 +107,29 @@ html
     font-weight: bold
   .question_option
     margin: 0.3rem 0
-    label
-      user-select: none
-    input[type='radio'],
-    input[type='checkbox']:empty
-      visibility: hidden
-    input[type='radio'] + label,
-    input[type='checkbox'] + label
-      position: relative
-      float: left
-      cursor: pointer
-      text-indent: 0.6rem
-    input[type='radio'] + label:before,
-    input[type='checkbox'] + label:before
-      position: absolute
-      display: block
-      content: ""
-      top: .3rem
-      width: .5rem
-      height: .5rem
-      background: #333 none repeat scroll 0% 0%
-      box-shadow:inset 0px 1px 3px rgba(black,.5)
     input[type='radio'] + label:before
       border-radius: 100%
-    input[type='radio']:checked + label:before,
-    input[type='checkbox']:checked + label:before
-      background: #3C3 repeat
+    input[type='radio'] ,
+    input[type='checkbox']
+      visibility: hidden
+      + label
+        user-select: none
+        position: relative
+        float: left
+        cursor: pointer
+        text-indent: .8rem
+        &:before
+          position: absolute
+          display: block
+          content: ""
+          top: .3rem
+          width: .5rem
+          height: .5rem
+          left: -0.25rem
+          background: #333
+          box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.5) inset
+      &:checked + label:before
+        background: #3C3 repeat
   .question .submit
     width: 4.75rem
     height: 1.375rem

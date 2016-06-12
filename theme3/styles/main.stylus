@@ -166,6 +166,7 @@ html
         float: left
         cursor: pointer
         text-indent: .8rem
+        padding-right: 3rem
         &:before
           position: absolute
           display: block

@@ -201,6 +201,7 @@ html {
   float: left;
   cursor: pointer;
   text-indent: 0.8rem;
+  padding-right: 3rem;
 }
 .question .question_option input[type='radio'] + label:before,
 .question .question_option input[type='checkbox'] + label:before {

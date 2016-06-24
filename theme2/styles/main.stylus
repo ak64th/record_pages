@@ -40,7 +40,7 @@ html
   font-size: .8rem
   line-height: 150%
   .intro
-    height: 6rem
+    max-height: 12rem
     background-color: #FFF
     font-size: .8rem
     line-height: 150%

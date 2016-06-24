@@ -14,7 +14,7 @@
       var errorView;
       var used = parseInt(localStorage.getItem(this.game_code + '_count')) || 0,
         max = parseInt(this.quizConfig.max_chances);
-      if (used > max) {
+      if (used >= max) {
         errorView = new app.RejectionNoMoreChanceView();
       } else {
         var now = new Date(),
